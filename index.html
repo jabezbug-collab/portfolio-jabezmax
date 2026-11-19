@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAVID JABEZ.M | THE E-COM MAXIMALIST</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Outfit:wght@400;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF0055;
+            --secondary: #00FFCC;
+            --accent: #FFFF00;
+            --dark: #1A1A1A;
+            --white: #FFFFFF;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--primary);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+            line-height: 0.85;
+        }
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-color: var(--primary);
+            background-image: radial-gradient(var(--dark) 2px, transparent 2px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+        .floating-shape {
+            position: absolute;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(60px);
+            opacity: 0.5;
+            border-radius: 50%;
+        }
+        .btn-max {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 24px 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: inline-block;
+            border: 6px solid var(--dark);
+            box-shadow: 12px 12px 0px var(--dark);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 100;
+        }
+        .btn-max:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 20px 20px 0px var(--secondary);
+            background: var(--white);
+        }
+        .project-card {
+            border: 6px solid var(--dark);
+            background: var(--white);
+            color: var(--dark);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            z-index: 20;
+            box-shadow: 20px 20px 0px var(--secondary);
+        }
+        .about-box {
+            background: var(--dark);
+            color: var(--white);
+            border: 8px solid var(--dark);
+            box-shadow: 20px 20px 0px var(--secondary);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 10;
+        }
+        .stack-item {
+            background: var(--white);
+            color: var(--dark);
+            border: 4px solid var(--dark);
+            padding: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: inline-block;
+            margin: 5px;
+            box-shadow: 4px 4px 0px var(--dark);
+            transition: all 0.2s ease;
+        }
+        .about-header {
+            font-size: clamp(4rem, 10vw, 8rem);
+            line-height: 0.8;
+            color: var(--secondary);
+            text-shadow: 5px 5px 0px var(--dark);
+            margin-bottom: 2rem;
+        }
+        .cursor-blob {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            filter: blur(10px);
+            transition: transform 0.1s ease;
+        }
+        .marquee {
+            background: var(--dark);
+            color: var(--white);
+            padding: 20px 0;
+            font-size: 4rem;
+            font-weight: 900;
+            overflow: hidden;
+            white-space: nowrap;
+            border-top: 8px solid var(--white);
+            border-bottom: 8px solid var(--white);
+            position: relative;
+            z-index: 10;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee-scroll 10s linear infinite;
+            padding-left: 100%;
+        }
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .sticker {
+            position: absolute;
+            padding: 10px 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: 4px solid var(--dark);
+            z-index: 20;
+            box-shadow: 5px 5px 0px var(--dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer"></div>
+    <div class="cursor-blob" id="cursor"></div>
+
+    <nav class="fixed top-0 left-0 w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference">
+        <div class="font-black text-3xl uppercase tracking-tighter">David Jabez.M</div>
+        <div class="flex gap-6 font-black uppercase text-sm">
+            <a href="#work" class="hover:text-secondary transition-colors">Work</a>
+            <a href="#about" class="hover:text-secondary transition-colors">About</a>
+            <a href="mailto:jabeztechw@gmail.com" class="bg-white text-black px-4 py-2 border-2 border-black">HIRE ME</a>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        <!-- HERO SECTION -->
+        <section class="min-h-screen px-8 flex flex-col justify-center relative overflow-hidden">
+            <div class="absolute inset-0 pointer-events-none z-0">
+                <div class="floating-shape w-96 h-96 bg-secondary top-[-10%] left-[-10%]"></div>
+                <div class="floating-shape w-[500px] h-[500px] bg-accent bottom-[-10%] right-[-10%]"></div>
+                <div class="floating-shape w-80 h-80 bg-white top-1/2 left-1/3"></div>
+                <div class="absolute top-20 -left-20 opacity-20 rotate-12">
+                    <h2 class="text-[20rem] font-black leading-none text-white">MAX</h2>
+                </div>
+                <div class="absolute bottom-20 -right-20 opacity-20 -rotate-12">
+                    <h2 class="text-[20rem] font-black leading-none text-white">MORE</h2>
+                </div>
+            </div>
+
+            <div class="sticker bg-white text-black top-40 right-20 rotate-12 z-20">100% CONVERSION</div>
+            <div class="sticker bg-secondary text-dark bottom-40 left-20 -rotate-6 z-20">NO LIMITS</div>
+
+            <div class="relative z-20">
+                <h1 class="text-7xl md:text-[12rem] font-black leading-none mb-12 tracking-tighter">
+                    BOLD<br><span class="text-secondary">SITES</span><br>BIG SALES.
+                </h1>
+                <p class="text-2xl md:text-4xl max-w-3xl font-bold leading-tight mb-12 text-white">
+                    I don't do "minimal." I build <span class="bg-white text-black px-2">attention-grabbing</span> e-commerce engines that dominate the screen and drive revenue.
+                </p>
+                <a href="mailto:jabeztechw@gmail.com" class="btn-max">
+                    LET'S BUILD IT BIG
+                </a>
+            </div>
+        </section>
+
+        <!-- MAX MARQUEE -->
+        <div class="marquee">
+            <div class="marquee-content uppercase">
+                CONVERSION • LUXURY • REVENUE • ARCHITECTURE • BOLD • CONVERSION • LUXURY • REVENUE • ARCHITECTURE • BOLD •
+            </div>
+        </div>
+
+        <!-- BRUTAL STATS -->
+        <section class="py-24 px-8 grid grid-cols-1 md:grid-cols-3 gap-0 border-y-8 border-black bg-white text-black relative z-10">
+            <div class="p-12 border-r-0 md:border-r-8 border-black flex flex-col items-center text-center hover:bg-secondary transition-colors">
+                <div class="big-number text-6xl font-black" data-value="98">0</div>
+                <p class="text-3xl font-black uppercase mt-4">Happy Clients</p>
+            </div>
+            <div class="p-12 border-r-0 md:border-r-8 border-black flex flex-col items-center text-center hover:bg-accent transition-colors">
+                <div class="big-number text-6xl font-black" data-value="150">0</div>
+                <p class="text-3xl font-black uppercase mt-4">Stores Shipped</p>
+            </div>
+            <div class="p-12 flex flex-col items-center text-center hover:bg-primary hover:text-white transition-colors">
+                <div class="big-number text-6xl font-black" data-value="22">0</div>
+                <p class="text-3xl font-black uppercase mt-4">ROI Boost %</p>
+            </div>
+        </section>
+
+        <!-- WORK SECTION -->
+        <section id="work" class="py-24 px-8 bg-dark text-white relative z-10">
+            <div class="flex justify-between items-end mb-24">
+                <h2 class="text-7xl md:text-[12rem] font-black leading-none text-secondary">THE<br>WORKS</h2>
+                <div class="text-right pb-4">
+                    <p class="text-sm font-bold uppercase opacity-50 mb-2">Full Archive</p>
+                    <p class="text-3xl font-black uppercase">2023 — 2026</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 01</span>
+                        <span class="font-bold opacity-50">2025</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">SMART NURSE</h3>
+                    <p class="text-lg mb-12 font-medium">Healthcare e-commerce optimization. Streamlining medical supply procurement.</p>
+                    <a href="https://smartnursev11.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 02</span>
+                        <span class="font-bold opacity-50">2024</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">JABEZ TEAMS</h3>
+                    <p class="text-lg mb-12 font-medium">Team management portal for digital agencies. High-efficiency tracking.</p>
+                    <a href="https://jabezteams.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 03</span>
+                        <span class="font-bold opacity-50">2024</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">HAPPY FATHER</h3>
+                    <p class="text-lg mb-12 font-medium">Niche gift e-commerce site. Optimized for emotional triggers.</p>
+                    <a href="https://happyfather.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 04</span>
+                        <span class="font-bold opacity-50">2023</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">HAPPY MOTHER ANNIE</h3>
+                    <p class="text-lg mb-12 font-medium">Bespoke floral and gift shop. Personalized gift-wrapping UX.</p>
+                    <a href="https://happymotherannie.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 05</span>
+                        <span class="font-bold opacity-50">2023</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">DHANVANTRI</h3>
+                    <p class="text-lg mb-12 font-medium">Ayurvedic health store. Balanced tradition with modern conversion.</p>
+                    <a href="https://dhanvantri1.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 06</span>
+                        <span class="font-bold opacity-50">2023</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">DHANVANTRI LANDING</h3>
+                    <p class="text-lg mb-12 font-medium">High-converting landing page for Ayurvedic product launches.</p>
+                    <a href="https://dhanvantri-landingpage.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 07</span>
+                        <span class="font-bold opacity-50">2023</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">DAVID JABEZ PORTFOLIO</h3>
+                    <p class="text-lg mb-12 font-medium">Personal showcase of architectural design and frontend engineering.</p>
+                    <a href="https://portfoliodavidjabez.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+                <div class="project-card p-10 group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="text-xs font-black uppercase bg-primary text-white px-3 py-1">Case 08</span>
+                        <span class="font-bold opacity-50">2023</span>
+                    </div>
+                    <h3 class="text-5xl font-black mb-6 group-hover:text-primary transition-colors">B-DAY APPA</h3>
+                    <p class="text-lg mb-12 font-medium">Luxe interactive digital birthday experience with animations.</p>
+                    <a href="https://happybirthdayappa.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+            </div></h3>
+                    <p class="text-lg mb-12 font-medium">Luxe interactive digital birthday experience with animations.</p>
+                    <a href="https://happybirthdayappa.pages.dev/" target="_blank" class="inline-block bg-dark text-white px-8 py-4 font-black uppercase hover:bg-primary transition-all">View Project</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="py-24 px-8 bg-secondary text-dark relative overflow-hidden z-10">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 items-center relative z-10">
+                <div class="relative">
+                    <div class="about-box p-12 transform rotate-6 flex items-center justify-center text-center">
+                        <p class="text-4xl font-black uppercase leading-tight">
+                            "MINIMALISM IS FOR THE BORED. I DESIGN FOR THE BOLD."
+                        </p>
+                    </div>
+                    <div class="absolute -top-10 -right-10 bg-accent p-6 font-black uppercase text-2xl border-4 border-dark -rotate-12 shadow-[5px_5px_0px_#000]">
+                        NO LIMITS
+                    </div>
+                </div>
+                <div class="relative z-20">
+                    <h2 class="about-header">THE<br>MAXIMALIST</h2>
+                    <p class="text-2xl font-bold mb-12 leading-relaxed">
+                        I create digital experiences that demand attention. By blending high-contrast colors, oversized type, and aggressive layouts, I ensure your store is impossible to ignore.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="stack-item">Next.js / React</div>
+                        <div class="stack-item">Tailwind CSS</div>
+                        <div class="stack-item">Shopify Plus</div>
+                        <div class="stack-item">GSAP / Three.js</div>
+                        <div class="stack-item">CRO Engineering</div>
+                        <div class="stack-item">Visual Dominance</div>
+                        <div class="stack-item">Bold Branding</div>
+                        <div class="stack-item">Revenue Growth</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="py-24 px-8 text-center bg-accent border-t-8 border-dark relative z-10">
+            <h2 class="text-8xl md:text-[15rem] font-black mb-12 leading-none tracking-tighter text-dark">READY TO<br>DOMINATE?</h2>
+            <a href="mailto:jabeztechw@gmail.com" class="btn-max text-4xl px-20 py-12">
+                CLAIM YOUR SPACE
+            </a>
+        </section>
+    </main>
+
+    <footer class="px-8 py-24 bg-dark text-white flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
+        <div class="font-black uppercase text-5xl tracking-tighter text-secondary">David Jabez.M</div>
+        <div class="flex flex-col items-center md:items-end gap-6">
+            <div class="flex gap-8 font-black uppercase text-xl">
+                <a href="mailto:jabeztechw@gmail.com" class="hover:text-secondary transition-colors">Email</a>
+                <a href="https://www.instagram.com/webmakers123" target="_blank" class="hover:text-secondary transition-colors">Instagram</a>
+            </div>
+            <p class="opacity-40 text-xs uppercase tracking-widest">© 2026 MAXIMALIST DESIGN STUDIO</p>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Blob Cursor
+        const cursor = document.getElementById('cursor');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX - 30,
+                y: e.clientY - 30,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+
+        // Animate floating shapes
+        gsap.to(".floating-shape", {
+            x: "random(-50, 50)",
+            y: "random(-50, 50)",
+            duration: "random(3, 6)",
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            stagger: 0.5
+        });
+
+        // Hero entrance
+        gsap.from("h1", {
+            opacity: 0,
+            x: -100,
+            duration: 1,
+            ease: "expo.out",
+            delay: 0.2
+        });
+
+        // Stats counter
+        const counters = document.querySelectorAll('.big-number');
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-value');
+            ScrollTrigger.create({
+                trigger: counter,
+                onEnter: () => {
+                    let count = 0;
+                    const interval = setInterval(() => {
+                        count++;
+                        counter.innerText = count;
+                        if (count === target) clearInterval(interval);
+                    }, 20);
+                }
+            });
+        });
+
+        // About section entrance
+        gsap.from(".about-box", {
+            opacity: 0,
+            scale: 0,
+            rotate: 45,
+            duration: 1,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 80%",
+            }
+        });
+
+        gsap.from(".stack-item", {
+            opacity: 0,
+            y: 20,
+            stagger: 0.1,
+            duration: 0.5,
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 70%",
+            }
+        });
+    </script>
+</body>
+</html>
